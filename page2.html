@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step Two: A Puzzle & A Song</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: lavender;
+            text-align: center;
+            padding: 50px;
+            color: #3a0066;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2.5rem; /* Adjusted for mobile friendliness */
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+        p {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.4rem; /* Making the Nunito font bigger as requested */
+            color: #4a2c6d;
+            max-width: 700px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .puzzle-container {
+            width: 90vw; /* Responsive width */
+            max-width: 800px; /* Max width for larger screens */
+            height: 60vh; /* Responsive height */
+            max-height: 600px;
+            margin-bottom: 30px;
+            border: 4px solid #2a004d;
+            border-radius: 12px;
+            overflow: hidden; /* Ensures the iframe corners are rounded */
+        }
+        .puzzle-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .lyric-container {
+            margin-top: 20px;
+        }
+        blockquote {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.8rem;
+            font-style: italic;
+            color: #3a0066;
+            margin: 0;
+        }
+        .lyric-input {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 15px;
+            font-size: 1.5rem;
+            border: 3px solid #4a2c6d;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Nunito', sans-serif;
+            color: #3a0066;
+            width: 80%;
+            max-width: 500px;
+        }
+        .proceed-button {
+            display: none; /* Initially hidden */
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            background-color: #3a0066;
+            color: lavender;
+            border: 4px solid #2a004d;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, background-color 0.3s;
+            font-family: 'Nunito', sans-serif;
+            margin-top: 20px;
+        }
+        .proceed-button:hover {
+            transform: scale(1.1);
+            background-color: #4d0099;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>GET READY FOR THE NEXT STEP!</h1>
+
+    <div class="puzzle-container">
+        <iframe class="puzzle-iframe" src="https://puzzel.org/en/jigsaw/embed?p=-OY7W7KzhALQ62zNrPlb"></iframe>
+    </div>
+
+    <h2>Instructions</h2>
+    <p>Solve the image above and fill in the blank below to progress to the next page.</p>
+
+    <div class="lyric-container">
+        <blockquote>
+            "I thought that I was dreaming..."
+        </blockquote>
+        <input type="text" id="lyricInput" class="lyric-input" placeholder="...when you said you loved me">
+    </div>
+
+    <a href="when-you-said-you-loved-me.html" class="proceed-button" id="proceedBtn">PROCEED</a>
+
+    <script>
+        // This script will show the "Proceed" button once the correct lyric is typed.
+        const lyricInput = document.getElementById('lyricInput');
+        const proceedBtn = document.getElementById('proceedBtn');
+
+        lyricInput.addEventListener('input', function() {
+            // Check if the typed answer is correct (ignoring case and extra spaces)
+            if (this.value.trim().toLowerCase() === 'when you said you loved me') {
+                proceedBtn.style.display = 'inline-block';
+            } else {
+                proceedBtn.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>
