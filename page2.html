@@ -103,12 +103,12 @@
 
     <h1>GET READY FOR THE NEXT STEP!</h1>
 
+    <h2>Instructions</h2>
+    <p>Solve the puzzle, then complete the lyric below to unlock the way forward!</p>
+
     <div class="puzzle-container">
         <iframe class="puzzle-iframe" src="https://www.jigsawplanet.com/?rc=play&pid=3330a363c5f9&view=iframe" frameborder="0" allowfullscreen></iframe>
     </div>
-
-    <h2>Instructions</h2>
-    <p>Solve the puzzle, then complete the lyric below to unlock the way forward!</p>
 
     <div class="lyric-container">
         <blockquote>
@@ -124,7 +124,13 @@
         const proceedBtn = document.getElementById('proceedBtn');
 
         lyricInput.addEventListener('input', function() {
-            // Check if the typed answer is correct (ignoring case and extra spaces)
             if (this.value.trim().toLowerCase() === 'when you said you loved me') {
                 proceedBtn.style.display = 'inline-block';
-            } else
+            } else {
+                proceedBtn.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>
