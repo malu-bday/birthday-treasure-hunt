@@ -111,7 +111,7 @@
         // --- ANIMATION SCRIPT ---
         const container = document.getElementById('animation-container');
         const elements = ['🌸', '💖', '🌺', '❤️', '🌷', '💕','🪻','🌹','💐','🪷'];
-        const elementCount = 80; // Increased from 30 for a fuller effect!
+        const elementCount = 80;
 
         for (let i = 0; i < elementCount; i++) {
             const fallingElement = document.createElement('span');
@@ -119,7 +119,7 @@
             fallingElement.textContent = elements[Math.floor(Math.random() * elements.length)];
             fallingElement.style.left = Math.random() * 100 + 'vw';
             fallingElement.style.animationDuration = (Math.random() * 5 + 7) + 's';
-            fallingElement.style.animationDelay = Math.random() * 10 + 's'; // Increased delay range
+            fallingElement.style.animationDelay = Math.random() * 10 + 's';
             fallingElement.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
             container.appendChild(fallingElement);
         }
@@ -128,4 +128,25 @@
         const backgroundMusic = document.getElementById('background-music');
         let hasInteracted = false;
 
-        function playMusic()
+        // This is the complete, working function
+        function playMusic() {
+            if (!hasInteracted) {
+                backgroundMusic.play().then(() => {
+                    hasInteracted = true;
+                }).catch(error => {
+                    // Autoplay was prevented.
+                    // The 'click' listener below will handle it.
+                });
+            }
+        }
+
+        // Listen for the first click anywhere on the page to start music
+        document.body.addEventListener('click', playMusic, { once: true });
+        
+        // Try to play on page load (might be blocked)
+        window.addEventListener('load', playMusic);
+
+    </script>
+
+</body>
+</html>
