@@ -18,17 +18,25 @@
             align-items: center;
         }
         h1 {
-            font-family: 'Press+Start+2P', cursive;
+            font-family: 'Press Start 2P', cursive;
             font-size: 2.5rem;
             margin-bottom: 20px;
             max-width: 900px;
-            line-height: 1.5;
+            line-height: 1.4;
         }
         h2 {
-            font-family: 'Press+Start+2P', cursive;
-            font-size: 1.8rem;
-            margin-top: 30px;
-            margin-bottom: 25px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        p {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            color: #4a2c6d;
+            max-width: 800px;
+            margin-bottom: 30px;
+            line-height: 1.6;
         }
         #photos-area, #timeline-area {
             display: flex;
@@ -38,10 +46,12 @@
             gap: 20px;
             margin-bottom: 30px;
             min-height: 180px;
-            max-width: 900px;
+            width: 100%;
+            max-width: 950px;
             padding: 20px;
             background-color: rgba(237, 231, 246, 0.5);
             border-radius: 15px;
+            box-sizing: border-box;
         }
         .photo {
             width: 150px;
@@ -52,6 +62,9 @@
             background-size: cover;
             background-position: center;
             transition: opacity 0.2s ease-in-out;
+        }
+        .photo.dragging {
+            opacity: 0.4;
         }
         .timeline-slot {
             width: 150px;
@@ -64,16 +77,18 @@
             align-items: center;
             font-weight: bold;
             color: #4a2c6d;
-            font-size: 1rem;
+            font-size: 0.9rem;
             text-align: center;
             padding: 10px;
+            box-sizing: border-box;
             transition: background-color 0.2s, border-color 0.2s;
         }
         .timeline-slot.drag-over {
             background-color: #d1c4e9;
+            border-style: solid;
         }
         .timeline-slot.correct {
-            border: 4px solid #4caf50; /* Green border for correct */
+            border-color: #4caf50; /* Green border for correct */
         }
         .timeline-slot.correct .photo {
             border-color: #4caf50;
@@ -99,15 +114,19 @@
     </style>
 </head>
 <body>
-    <h1>Relive some of my favourite memories of us together, let's see if you remember which picture was clicked for what</h1>
+
+    <h1>You're doing great, keep going</h1>
+
+    <h2>Instructions</h2>
+    <p>Relive some of my favourite memories of us together, let's see if you remember which picture was clicked for what</p>
 
     <div id="photos-area">
-        <div class="photo" draggable="true" id="photo-1" style="background-image: url('1.png');"></div>
-        <div class="photo" draggable="true" id="photo-2" style="background-image: url('2.png');"></div>
-        <div class="photo" draggable="true" id="photo-3" style="background-image: url('3.png');"></div>
-        <div class="photo" draggable="true" id="photo-4" style="background-image: url('4.png');"></div>
-        <div class="photo" draggable="true" id="photo-5" style="background-image: url('5.png');"></div>
-        <div class="photo" draggable="true" id="photo-6" style="background-image: url('6.png');"></div>
+        <div class="photo" draggable="true" data-id="1" style="background-image: url('1.png');"></div>
+        <div class="photo" draggable="true" data-id="2" style="background-image: url('2.png');"></div>
+        <div class="photo" draggable="true" data-id="3" style="background-image: url('3.png');"></div>
+        <div class="photo" draggable="true" data-id="4" style="background-image: url('4.png');"></div>
+        <div class="photo" draggable="true" data-id="5" style="background-image: url('5.png');"></div>
+        <div class="photo" draggable="true" data-id="6" style="background-image: url('6.png');"></div>
     </div>
 
     <div id="timeline-area">
@@ -122,51 +141,62 @@
     <a href="NEXT_PAGE.html" id="proceedBtn">PROCEED</a>
 
     <script>
+        const photosArea = document.getElementById('photos-area');
+        const timelineSlots = document.querySelectorAll('.timeline-slot');
         const photos = document.querySelectorAll('.photo');
-        const slots = document.querySelectorAll('.timeline-slot');
         const proceedBtn = document.getElementById('proceedBtn');
-
         let draggedPhoto = null;
 
         photos.forEach(photo => {
-            photo.addEventListener('dragstart', (e) => {
-                draggedPhoto = photo;
-                setTimeout(() => photo.style.opacity = '0.5', 0);
-            });
-            photo.addEventListener('dragend', () => {
-                draggedPhoto.style.opacity = '1';
-                draggedPhoto = null;
-            });
+            photo.addEventListener('dragstart', dragStart);
+            photo.addEventListener('dragend', dragEnd);
         });
 
-        slots.forEach(slot => {
-            slot.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                slot.classList.add('drag-over');
-            });
-            slot.addEventListener('dragleave', () => {
-                slot.classList.remove('drag-over');
-            });
-            slot.addEventListener('drop', (e) => {
-                e.preventDefault();
-                slot.classList.remove('drag-over');
-                if (draggedPhoto && !slot.querySelector('.photo')) {
-                    slot.appendChild(draggedPhoto);
-                    checkWinCondition();
-                }
-            });
+        timelineSlots.forEach(slot => {
+            slot.addEventListener('dragover', dragOver);
+            slot.addEventListener('dragleave', dragLeave);
+            slot.addEventListener('drop', drop);
         });
+
+        function dragStart(e) {
+            draggedPhoto = this;
+            setTimeout(() => this.classList.add('dragging'), 0);
+        }
+
+        function dragEnd() {
+            this.classList.remove('dragging');
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        }
+        
+        function dragLeave() {
+            this.classList.remove('drag-over');
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            
+            // If the slot already has a photo, move it back to the start
+            if (this.children.length > 0) {
+                photosArea.appendChild(this.children[0]);
+            }
+            
+            this.appendChild(draggedPhoto);
+            checkWinCondition();
+        }
 
         function checkWinCondition() {
-            let correctMatches = 0;
-            slots.forEach(slot => {
+            let correctCount = 0;
+            timelineSlots.forEach(slot => {
                 const photo = slot.querySelector('.photo');
                 if (photo) {
-                    const photoIdNumber = photo.id.split('-')[1];
-                    const slotIdNumber = slot.dataset.id;
-                    if (photoIdNumber === slotIdNumber) {
+                    if (photo.dataset.id === slot.dataset.id) {
                         slot.classList.add('correct');
-                        correctMatches++;
+                        correctCount++;
                     } else {
                         slot.classList.remove('correct');
                     }
@@ -175,7 +205,7 @@
                 }
             });
 
-            if (correctMatches === slots.length) {
+            if (correctCount === timelineSlots.length) {
                 proceedBtn.style.display = 'inline-block';
             } else {
                 proceedBtn.style.display = 'none';
