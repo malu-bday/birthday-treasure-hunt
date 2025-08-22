@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: lavender;
+            text-align: center;
+            padding: 50px;
+            color: #3a0066;
+            margin: 0;
+            overflow: hidden; /* Hide scrollbars caused by animations */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .animation-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none; /* Make sure it doesn't interfere with clicks */
+        }
+        .falling-element {
+            position: absolute;
+            top: -10%;
+            font-size: 2rem;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        .container {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+            background-color: rgba(237, 231, 246, 0.8); /* Slight background to make text readable */
+            padding: 40px;
+            border-radius: 20px;
+            border: 4px solid #2a004d;
+        }
+        .main-header {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3rem;
+            color: #3a0066;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        .message {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.4rem;
+            color: #4a2c6d;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+        .proceed-button {
+            display: inline-block;
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            background-color: #3a0066;
+            color: lavender;
+            border: 4px solid #2a004d;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, background-color 0.3s;
+            font-family: 'Nunito', sans-serif;
+        }
+        .proceed-button:hover {
+            transform: scale(1.1);
+            background-color: #4d0099;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="animation-container" id="animation-container">
+        </div>
+
+    <div class="container">
+        <h1 class="main-header">HAPPY BIRTHDAY ANGEL</h1>
+
+        <p class="message">
+            I promise that the next page is the last page, thank you for your patience, with this treasure hunt, and with me for the past 10 months. I appreciate you so much, I love you so much.
+        </p>
+
+        <a href="very-last-page.html" class="proceed-button">ONE LAST CLICK</a>
+    </div>
+
+    <script>
+        const container = document.getElementById('animation-container');
+        const elements = ['🌸', '💖', '🌺', '❤️', '🌷', '💕'];
+        const elementCount = 30; // How many elements to animate
+
+        for (let i = 0; i < elementCount; i++) {
+            const fallingElement = document.createElement('span');
+            fallingElement.classList.add('falling-element');
+            
+            // Randomly pick an emoji
+            fallingElement.textContent = elements[Math.floor(Math.random() * elements.length)];
+            
+            // Randomize starting position, animation duration, and delay
+            fallingElement.style.left = Math.random() * 100 + 'vw';
+            fallingElement.style.animationDuration = (Math.random() * 5 + 5) + 's'; // Duration between 5s and 10s
+            fallingElement.style.animationDelay = Math.random() * 5 + 's'; // Start delay up to 5s
+            fallingElement.style.fontSize = (Math.random() * 1.5 + 1) + 'rem'; // Random size
+
+            container.appendChild(fallingElement);
+        }
+    </script>
+
+</body>
+</html>
