@@ -88,13 +88,13 @@
             border-style: solid;
         }
         .timeline-slot.correct {
-            border-color: #4caf50; /* Green border for correct */
+            border-color: #4caf50;
         }
         .timeline-slot.correct .photo {
             border-color: #4caf50;
         }
         #proceedBtn {
-            display: none; /* Initially hidden */
+            display: none;
             padding: 15px 30px;
             font-size: 1.5rem;
             background-color: #3a0066;
@@ -110,6 +110,61 @@
         #proceedBtn:hover {
             transform: scale(1.05);
             background-color: #4d0099;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #ede7f6;
+            color: #3a0066;
+            margin: auto;
+            padding: 30px;
+            border: 4px solid #2a004d;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: fadeIn 0.3s;
+        }
+        #modal-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            margin-top: 0;
+        }
+        #modal-description {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            white-space: pre-wrap; /* Preserves line breaks */
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #3a0066;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: scale(0.9);}
+            to {opacity: 1; transform: scale(1);}
         }
     </style>
 </head>
@@ -138,25 +193,79 @@
         <div class="timeline-slot" data-id="6">Eighth Monthaversary</div>
     </div>
 
-    <a href="NEXT_PAGE.html" id="proceedBtn">PROCEED</a>
+    <a href="final-page.html" id="proceedBtn">PROCEED</a>
+
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+        </div>
+    </div>
 
     <script>
+        // --- DATA FOR POP-UPS ---
+        const eventDetails = {
+            'match': {
+                title: "First Match",
+                description: `This is the first time ever that I had a girl wearing my jersey come watch me play. I remember not having a great game in the beginning and it only got worse when Rahul got a red card, but then I remember scoring. Everything after that is in slow motion in my mind - me doing the celebration and pointing at you, getting surrounded by everyone after scoring, and then at the end, that nervous walk towards you all sweaty while everyone circles us and cheers for us as we do our most awkward hug. Its obvious why this is one of my favourite memories.`
+            },
+            'second': {
+                title: "Second Monthaversary",
+                description: `I remember driving such a long way to find that bridge, and we got there and walked towards the middle and started talking and clicking pictures and taking the view in. You looked so stunning in that red top and the image of you looking at the sunset and those colours reflecting on your face is permanently tattooed in my head. We went and got us some waffles after this as well, and waffles with you is always going to be my favourite. OH ALSO, you gave me my first Liverpool memorobilia.`
+            },
+            'fourth': {
+                title: "Fourth Monthaversary",
+                description: `We finally gott around to going to Roy's after being rejected on oour first monthaversary (fuck them, Basil goated). We accidentally twinned and ended up getting each other flowers and we laughed about that coincidence at Gate 2 when I came to pick you up. I remember being in a rush all evening before that because I had training and I had to be on time to pick you up but by the time training would be done, the flower shop would be shut so I had to buy flowers before, keep them in my fridge, then go to training, leave early, shower, change, get the flowers and then come pick you up. BABYGIRL. YOU LOOKED SO HOT IN THAT WHITE DRESS. Ngl, I think one of my favourite things of yours that you have worn. We saw some stars on our drive as well after dinner.`
+            },
+            '4': {
+                title: "Breakfast Date",
+                description: `Honestly, how many times have I talked to you about this day. You sleeping over the night before, us getting ready together to catch the parade, only to be hopelessly late, then bailing on everyone to get a fancy breakfast at Vito's. You getting all sugared up there also. Us accidentally matching again with the green and beige. Then coming over to my place again to make some popcorn and watch Bangalore Days. I remember you being so excited to give me little tidbits about the movie or the cast or give me lore about random things. I find it unreal that we had days like this, to be honest.`
+            },
+            '5': {
+                title: "First Festival Together",
+                description: `I remember picking you up at an unholy hour and then bringing you over. We cuddled and napped for a while and then we made you nutella toast and got colours. We twinned again with tie dye clothes and got ready to meet everyone. We put some colour on each other as we were leaving for our iconic "O Rangrez" moment. Then going to the place, getting blinded with water and colour, then going for lunch, getting you drunk to have our fun later, only to end up at the beach and giving Aditi a dick, then coming home shit tired and filled with colour. You fell asleep on my floor I remember. It was a long day, and it didn't go as planned, but I had my best ever holi because you were with me.`
+            },
+            '6': {
+                title: "Eighth Monthaversary",
+                description: `I know that technically this picture is not on our eighth monthaversary, but I do think that this was our favourite of all monthaversarys that we've had. We were strugggling with the distance and you were a hotshot intern at work and I planned on surprising you only for you to make plans to go home, ruining my surprise. This only started the events of my favourite, most magical weekend ever, with us walking the streets of a city we knew little about, going places, meeting people, having so much alone, uninterrupted time. What a day this was as well, you looked so hot, you made that dress worthy of being worn. I remember thinking to myself how lucky I was to have a girlfriend in you.`
+            }
+        };
+
+        // --- DOM ELEMENTS ---
         const photosArea = document.getElementById('photos-area');
         const timelineSlots = document.querySelectorAll('.timeline-slot');
         const photos = document.querySelectorAll('.photo');
         const proceedBtn = document.getElementById('proceedBtn');
+        const modal = document.getElementById('event-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const closeButton = document.querySelector('.close-button');
+
         let draggedPhoto = null;
 
-        photos.forEach(photo => {
-            photo.addEventListener('dragstart', dragStart);
-            photo.addEventListener('dragend', dragEnd);
-        });
+        // --- FUNCTIONS ---
+        function shufflePhotos() {
+            const photoArray = Array.from(photos);
+            for (let i = photoArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [photoArray[i], photoArray[j]] = [photoArray[j], photoArray[i]];
+            }
+            photoArray.forEach(photo => photosArea.appendChild(photo));
+        }
 
-        timelineSlots.forEach(slot => {
-            slot.addEventListener('dragover', dragOver);
-            slot.addEventListener('dragleave', dragLeave);
-            slot.addEventListener('drop', drop);
-        });
+        function showModal(id) {
+            const details = eventDetails[id];
+            if (details) {
+                modalTitle.textContent = details.title;
+                modalDescription.textContent = details.description;
+                modal.style.display = 'flex';
+            }
+        }
+
+        function hideModal() {
+            modal.style.display = 'none';
+        }
 
         function dragStart(e) {
             draggedPhoto = this;
@@ -180,13 +289,19 @@
             e.preventDefault();
             this.classList.remove('drag-over');
             
+            const wasCorrectBefore = this.classList.contains('correct');
+
             if (this.children.length > 0) {
-                const existingPhoto = this.children[0];
-                const originalContainer = document.getElementById('photos-area');
-                originalContainer.appendChild(existingPhoto);
+                photosArea.appendChild(this.children[0]);
             }
             
             this.appendChild(draggedPhoto);
+            
+            const isNowCorrect = draggedPhoto.dataset.id === this.dataset.id;
+            if (isNowCorrect && !wasCorrectBefore) {
+                showModal(this.dataset.id);
+            }
+
             checkWinCondition();
         }
 
@@ -212,6 +327,29 @@
                 proceedBtn.style.display = 'none';
             }
         }
+
+        // --- EVENT LISTENERS ---
+        photos.forEach(photo => {
+            photo.addEventListener('dragstart', dragStart);
+            photo.addEventListener('dragend', dragEnd);
+        });
+
+        timelineSlots.forEach(slot => {
+            slot.addEventListener('dragover', dragOver);
+            slot.addEventListener('dragleave', dragLeave);
+            slot.addEventListener('drop', drop);
+        });
+
+        closeButton.addEventListener('click', hideModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+
+        // --- INITIALIZE PAGE ---
+        document.addEventListener('DOMContentLoaded', shufflePhotos);
+
     </script>
 </body>
 </html>
