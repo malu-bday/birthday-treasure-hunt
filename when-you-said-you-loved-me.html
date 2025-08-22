@@ -121,18 +121,18 @@
     <p>Relive some of my favourite memories of us together, let's see if you remember which picture was clicked for what</p>
 
     <div id="photos-area">
-        <div class="photo" draggable="true" data-id="1" style="background-image: url('1.png');"></div>
-        <div class="photo" draggable="true" data-id="2" style="background-image: url('2.png');"></div>
-        <div class="photo" draggable="true" data-id="3" style="background-image: url('3.png');"></div>
+        <div class="photo" draggable="true" data-id="match" style="background-image: url('match.png');"></div>
+        <div class="photo" draggable="true" data-id="second" style="background-image: url('second.png');"></div>
+        <div class="photo" draggable="true" data-id="fourth" style="background-image: url('fourth.png');"></div>
         <div class="photo" draggable="true" data-id="4" style="background-image: url('4.png');"></div>
         <div class="photo" draggable="true" data-id="5" style="background-image: url('5.png');"></div>
         <div class="photo" draggable="true" data-id="6" style="background-image: url('6.png');"></div>
     </div>
 
     <div id="timeline-area">
-        <div class="timeline-slot" data-id="1">First Match</div>
-        <div class="timeline-slot" data-id="2">Second Monthaversary</div>
-        <div class="timeline-slot" data-id="3">Fourth Monthaversary</div>
+        <div class="timeline-slot" data-id="match">First Match</div>
+        <div class="timeline-slot" data-id="second">Second Monthaversary</div>
+        <div class="timeline-slot" data-id="fourth">Fourth Monthaversary</div>
         <div class="timeline-slot" data-id="4">Breakfast Date</div>
         <div class="timeline-slot" data-id="5">First Festival Together</div>
         <div class="timeline-slot" data-id="6">Eighth Monthaversary</div>
@@ -180,9 +180,10 @@
             e.preventDefault();
             this.classList.remove('drag-over');
             
-            // If the slot already has a photo, move it back to the start
             if (this.children.length > 0) {
-                photosArea.appendChild(this.children[0]);
+                const existingPhoto = this.children[0];
+                const originalContainer = document.getElementById('photos-area');
+                originalContainer.appendChild(existingPhoto);
             }
             
             this.appendChild(draggedPhoto);
