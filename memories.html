@@ -12,6 +12,16 @@
             text-align: center;
             padding: 50px;
             color: #3a0066;
+            position: relative;
+        }
+        .content-container {
+            position: relative;
+            z-index: 10;
+            background-color: rgba(237, 231, 246, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 700px;
+            margin: 0 auto;
         }
         .header {
             font-family: 'Press Start 2P', cursive;
@@ -22,29 +32,19 @@
             font-family: 'Nunito', sans-serif;
             font-size: 1.2rem;
             color: #4a2c6d;
-            max-width: 700px;
-            margin: 0 auto 50px auto;
+            margin: 0 auto 20px auto; /* Reduced bottom margin */
             line-height: 1.6;
-        }
-        .collage-container {
-            position: relative;
-            width: 90%;
-            max-width: 1200px;
-            height: 800px; /* Adjust height as needed */
-            margin: 50px auto;
-            border: 4px solid #2a004d;
-            border-radius: 15px;
-            background-color: rgba(237, 231, 246, 0.5);
         }
         .photo-wrapper {
             position: absolute;
             border: 5px solid white;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             transition: transform 0.3s ease, z-index 0.3s;
+            z-index: 1;
         }
         .photo-wrapper:hover {
-            transform: scale(1.15) !important; /* Important to override individual rotations */
-            z-index: 10;
+            transform: scale(1.15) !important;
+            z-index: 11;
         }
         .photo-img {
             display: block;
@@ -73,34 +73,13 @@
         .photo-wrapper:hover .photo-caption {
             opacity: 1;
         }
-        /* Individual photo positions and sizes */
-        #a { top: 5%; left: 5%; width: 150px; transform: rotate(-10deg); }
-        #b { top: 10%; left: 25%; width: 200px; transform: rotate(5deg); }
-        #c { top: 8%; left: 50%; width: 160px; transform: rotate(8deg); }
-        #d { top: 15%; left: 75%; width: 180px; transform: rotate(-5deg); }
-        #e { top: 30%; left: 60%; width: 220px; transform: rotate(12deg); }
-        #f { top: 25%; left: 10%; width: 170px; transform: rotate(3deg); }
-        #g { top: 40%; left: 30%; width: 180px; transform: rotate(-8deg); }
-        #h { top: 50%; left: 5%; width: 210px; transform: rotate(7deg); }
-        #i { top: 60%; left: 20%; width: 160px; transform: rotate(-12deg); }
-        #j { top: 35%; left: 80%; width: 190px; transform: rotate(4deg); }
-        #k { top: 55%; left: 45%; width: 200px; transform: rotate(-3deg); }
-        #l { top: 75%; left: 10%; width: 180px; transform: rotate(10deg); }
-        #m { top: 65%; left: 65%; width: 170px; transform: rotate(-7deg); }
-        #n { top: 70%; left: 85%; width: 150px; transform: rotate(15deg); }
-        #o { top: 80%; left: 35%; width: 190px; transform: rotate(2deg); }
-        #p { top: 2%; left: 65%; width: 150px; transform: rotate(-9deg); }
-        #q { top: 45%; left: 75%; width: 160px; transform: rotate(6deg); }
-        #r { top: 60%; left: 80%; width: 200px; transform: rotate(-4deg); }
-        #s { top: 20%; left: 40%; width: 180px; transform: rotate(11deg); }
-        #t { top: 85%; left: 55%; width: 210px; transform: rotate(-6deg); }
-        #u { top: 82%; left: 75%; width: 160px; transform: rotate(9deg); }
-        #v { top: 2%; left: 15%; width: 170px; transform: rotate(13deg); }
-        #w { top: 48%; left: 18%; width: 150px; transform: rotate(-15deg); }
-
         .proceed-button {
-            display: inline-block;
-            margin-top: 40px;
+            position: fixed; /* Fixes the button to the viewport */
+            bottom: 30px; /* Distance from the bottom */
+            left: 50%;
+            transform: translateX(-50%) translateY(200%); /* Start off-screen */
+            opacity: 0; /* Start invisible */
+            z-index: 100; /* Ensure it's on top */
             padding: 20px 40px;
             font-size: 1.5rem;
             background-color: #3a0066;
@@ -109,49 +88,105 @@
             border-radius: 12px;
             cursor: pointer;
             text-decoration: none;
-            transition: transform 0.2s, background-color 0.3s;
             font-family: 'Nunito', sans-serif;
+            transition: transform 0.5s ease, opacity 0.5s ease; /* Smooth transition */
+        }
+        .proceed-button.visible {
+            transform: translateX(-50%) translateY(0); /* Move to final position */
+            opacity: 1; /* Make visible */
         }
         .proceed-button:hover {
-            transform: scale(1.1);
-            background-color: #4d0099;
+            transform: translateX(-50%) scale(1.1) !important;
         }
     </style>
 </head>
 <body>
 
-    <h1 class="header">Down Memory Lane</h1>
-    <p class="description">
-        Some of my favourite pictures of us. These never fail to make me smile or bring a tear to my eyes.
-    </p>
-
-    <div class="collage-container">
-        <div class="photo-wrapper" id="a"><img src="a.png" class="photo-img"><p class="photo-caption">I love how safe and calm you feel with me</p></div>
-        <div class="photo-wrapper" id="b"><img src="b.png" class="photo-img"><p class="photo-caption">Church Street date, walking the road and taking photobooth pictures</p></div>
-        <div class="photo-wrapper" id="c"><img src="c.png" class="photo-img"><p class="photo-caption">You wearing my Liverpool jersey, me wearing one that you got me</p></div>
-        <div class="photo-wrapper" id="d"><img src="d.png" class="photo-img"><p class="photo-caption">One of our many Burger KIng escapades</p></div>
-        <div class="photo-wrapper" id="e"><img src="e.png" class="photo-img"><p class="photo-caption">One of my favourite nights with you ever</p></div>
-        <div class="photo-wrapper" id="f"><img src="f.png" class="photo-img"><p class="photo-caption">Delhi Dhaba post classes date</p></div>
-        <div class="photo-wrapper" id="g"><img src="g.png" class="photo-img"><p class="photo-caption">Just holding my world while sleeping :)</p></div>
-        <div class="photo-wrapper" id="h"><img src="h.png" class="photo-img"><p class="photo-caption">Bacchus date! You looked so hot my god</p></div>
-        <div class="photo-wrapper" id="i"><img src="i.png" class="photo-img"><p class="photo-caption">Annual Day - we went shopping for my shirt that same morning</p></div>
-        <div class="photo-wrapper" id="j"><img src="j.png" class="photo-img"><p class="photo-caption">My last time seeing you perform competitively :')</p></div>
-        <div class="photo-wrapper" id="k"><img src="k.png" class="photo-img"><p class="photo-caption">Our safe place, my home</p></div>
-        <div class="photo-wrapper" id="l"><img src="l.png" class="photo-img"><p class="photo-caption">Two goofs so in love with each other</p></div>
-        <div class="photo-wrapper" id="m"><img src="m.png" class="photo-img"><p class="photo-caption">New jersey shoot day</p></div>
-        <div class="photo-wrapper" id="n"><img src="n.png" class="photo-img"><p class="photo-caption">Back to Manipal lake, chasing our one and only sunrise</p></div>
-        <div class="photo-wrapper" id="o"><img src="o.png" class="photo-img"><p class="photo-caption">Me with my trophy</p></div>
-        <div class="photo-wrapper" id="p"><img src="p.png" class="photo-img"><p class="photo-caption">Just one of those pictures that make me smile</p></div>
-        <div class="photo-wrapper" id="q"><img src="q.png" class="photo-img"><p class="photo-caption">The first time you dressed up in front of me</p></div>
-        <div class="photo-wrapper" id="r"><img src="r.png" class="photo-img"><p class="photo-caption">To be your bangle delivery guy now and forever</p></div>
-        <div class="photo-wrapper" id="s"><img src="s.png" class="photo-img"><p class="photo-caption">Soft Launch day</p></div>
-        <div class="photo-wrapper" id="t"><img src="t.png" class="photo-img"><p class="photo-caption">Adulting day, getting documents and Aadhar and going to the bank</p></div>
-        <div class="photo-wrapper" id="u"><img src="u.png" class="photo-img"><p class="photo-caption">The morning after your first night over</p></div>
-        <div class="photo-wrapper" id="v"><img src="v.png" class="photo-img"><p class="photo-caption">Before "us" existed</p></div>
-        <div class="photo-wrapper" id="w"><img src="w.png" class="photo-img"><p class="photo-caption">Our first evening after knowing about each other</p></div>
+    <div class="content-container">
+        <h1 class="header">Down Memory Lane</h1>
+        <p class="description">
+            Some of my favourite pictures of us. These never fail to make me smile or bring a tear to my eyes.
+        </p>
     </div>
 
-    <a href="when-you-said-you-loved-me.html" class="proceed-button">PROCEED</a>
+    <a href="when-you-said-you-loved-me.html" class="proceed-button" id="proceedBtn">PROCEED</a>
 
+    <script>
+        const memories = [
+            { src: 'a.jpg', caption: 'I love how safe and calm you feel with me' },
+            { src: 'b.jpg', caption: 'Church Street date, walking the road and taking photobooth pictures' },
+            { src: 'c.jpg', caption: 'You wearing my Liverpool jersey, me wearing one that you got me' },
+            { src: 'd.jpg', caption: 'One of our many Burger KIng escapades' },
+            { src: 'e.jpg', caption: 'One of my favourite nights with you ever' },
+            { src: 'f.jpg', caption: 'Delhi Dhaba post classes date' },
+            { src: 'g.jpg', caption: 'Just holding my world while sleeping :)' },
+            { src: 'h.jpg', caption: 'Bacchus date! You looked so hot my god' },
+            { src: 'i.jpg', caption: 'Annual Day - we went shopping for my shirt that same morning' },
+            { src: 'j.jpg', caption: 'My last time seeing you perform competitively :")' },
+            { src: 'k.jpg', caption: 'Our safe place, my home' },
+            { src: 'l.jpg', caption: 'Two goofs so in love with each other' },
+            { src: 'm.jpg', caption: 'New jersey shoot day' },
+            { src: 'n.jpg', caption: 'Back to Manipal lake, chasing our one and only sunrise' },
+            { src: 'o.jpg', caption: 'Me with my trophy' },
+            { src: 'p.jpg', caption: 'Just one of those pictures that make me smile' },
+            { src: 'q.jpg', caption: 'The first time you dressed up in front of me' },
+            { src: 'r.jpg', caption: 'To be your bangle delivery guy now and forever' },
+            { src: 's.jpg', caption: 'Soft Launch day' },
+            { src: 't.jpg', caption: 'Adulting day, getting documents and Aadhar and going to the bank' },
+            { src: 'u.jpg', caption: 'The morning after your first night over' },
+            { src: 'v.jpg', caption: 'Before "us" existed' },
+            { src: 'w.jpg', caption: 'Our first evening after knowing about each other' }
+        ];
+
+        let currentPhotoTop = 100;
+        let buttonShown = false;
+        const proceedBtn = document.getElementById('proceedBtn');
+
+        function createPhotoElement() {
+            const memory = memories[Math.floor(Math.random() * memories.length)];
+            const wrapper = document.createElement('div');
+            wrapper.className = 'photo-wrapper';
+            const img = document.createElement('img');
+            img.className = 'photo-img';
+            img.src = memory.src;
+            const caption = document.createElement('p');
+            caption.className = 'photo-caption';
+            caption.textContent = memory.caption;
+            wrapper.appendChild(img);
+            wrapper.appendChild(caption);
+            document.body.appendChild(wrapper);
+
+            const size = Math.random() * 100 + 150;
+            wrapper.style.width = size + 'px';
+            wrapper.style.left = Math.random() * (window.innerWidth - size - 20) + 'px';
+            wrapper.style.top = currentPhotoTop + (Math.random() * 200) + 'px';
+            wrapper.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+        }
+
+        function addMorePhotos(count = 5) {
+            for (let i = 0; i < count; i++) {
+                createPhotoElement();
+            }
+            currentPhotoTop += 400;
+        }
+
+        window.addEventListener('scroll', () => {
+            // Infinite scroll logic
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+                addMorePhotos();
+            }
+
+            // Logic to show the button
+            if (!buttonShown && window.scrollY > 600) { // Show button after scrolling 600px
+                proceedBtn.classList.add('visible');
+                buttonShown = true;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            addMorePhotos(15);
+        });
+
+    </script>
 </body>
 </html>
