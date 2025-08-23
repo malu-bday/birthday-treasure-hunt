@@ -32,7 +32,7 @@
             font-family: 'Nunito', sans-serif;
             font-size: 1.2rem;
             color: #4a2c6d;
-            margin: 0 auto 20px auto; /* Reduced bottom margin */
+            margin: 0 auto 20px auto;
             line-height: 1.6;
         }
         .photo-wrapper {
@@ -74,12 +74,12 @@
             opacity: 1;
         }
         .proceed-button {
-            position: fixed; /* Fixes the button to the viewport */
-            bottom: 30px; /* Distance from the bottom */
+            position: fixed;
+            bottom: 30px;
             left: 50%;
-            transform: translateX(-50%) translateY(200%); /* Start off-screen */
-            opacity: 0; /* Start invisible */
-            z-index: 100; /* Ensure it's on top */
+            transform: translateX(-50%) translateY(200%);
+            opacity: 0;
+            z-index: 100;
             padding: 20px 40px;
             font-size: 1.5rem;
             background-color: #3a0066;
@@ -89,11 +89,11 @@
             cursor: pointer;
             text-decoration: none;
             font-family: 'Nunito', sans-serif;
-            transition: transform 0.5s ease, opacity 0.5s ease; /* Smooth transition */
+            transition: transform 0.5s ease, opacity 0.5s ease;
         }
         .proceed-button.visible {
-            transform: translateX(-50%) translateY(0); /* Move to final position */
-            opacity: 1; /* Make visible */
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
         }
         .proceed-button:hover {
             transform: translateX(-50%) scale(1.1) !important;
@@ -101,6 +101,11 @@
     </style>
 </head>
 <body>
+
+    <audio id="background-music" loop>
+        <source src="music1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <div class="content-container">
         <h1 class="header">Down Memory Lane</h1>
@@ -112,36 +117,19 @@
     <a href="when-you-said-you-loved-me.html" class="proceed-button" id="proceedBtn">PROCEED</a>
 
     <script>
+        // --- DATA ---
         const memories = [
-            { src: 'a.jpg', caption: 'I love how safe and calm you feel with me' },
-            { src: 'b.jpg', caption: 'Church Street date, walking the road and taking photobooth pictures' },
-            { src: 'c.jpg', caption: 'You wearing my Liverpool jersey, me wearing one that you got me' },
-            { src: 'd.jpg', caption: 'One of our many Burger KIng escapades' },
-            { src: 'e.jpg', caption: 'One of my favourite nights with you ever' },
-            { src: 'f.jpg', caption: 'Delhi Dhaba post classes date' },
-            { src: 'g.jpg', caption: 'Just holding my world while sleeping :)' },
-            { src: 'h.jpg', caption: 'Bacchus date! You looked so hot my god' },
-            { src: 'i.jpg', caption: 'Annual Day - we went shopping for my shirt that same morning' },
-            { src: 'j.jpg', caption: 'My last time seeing you perform competitively :")' },
-            { src: 'k.jpg', caption: 'Our safe place, my home' },
-            { src: 'l.jpg', caption: 'Two goofs so in love with each other' },
-            { src: 'm.jpg', caption: 'New jersey shoot day' },
-            { src: 'n.jpg', caption: 'Back to Manipal lake, chasing our one and only sunrise' },
-            { src: 'o.jpg', caption: 'Me with my trophy' },
-            { src: 'p.jpg', caption: 'Just one of those pictures that make me smile' },
-            { src: 'q.jpg', caption: 'The first time you dressed up in front of me' },
-            { src: 'r.jpg', caption: 'To be your bangle delivery guy now and forever' },
-            { src: 's.jpg', caption: 'Soft Launch day' },
-            { src: 't.jpg', caption: 'Adulting day, getting documents and Aadhar and going to the bank' },
-            { src: 'u.jpg', caption: 'The morning after your first night over' },
-            { src: 'v.jpg', caption: 'Before "us" existed' },
-            { src: 'w.jpg', caption: 'Our first evening after knowing about each other' }
+            { src: 'a.jpg', caption: 'I love how safe and calm you feel with me' }, { src: 'b.jpg', caption: 'Church Street date, walking the road and taking photobooth pictures' }, { src: 'c.jpg', caption: 'You wearing my Liverpool jersey, me wearing one that you got me' }, { src: 'd.jpg', caption: 'One of our many Burger KIng escapades' }, { src: 'e.jpg', caption: 'One of my favourite nights with you ever' }, { src: 'f.jpg', caption: 'Delhi Dhaba post classes date' }, { src: 'g.jpg', caption: 'Just holding my world while sleeping :)' }, { src: 'h.jpg', caption: 'Bacchus date! You looked so hot my god' }, { src: 'i.jpg', caption: 'Annual Day - we went shopping for my shirt that same morning' }, { src: 'j.jpg', caption: 'My last time seeing you perform competitively :")' }, { src: 'k.jpg', caption: 'Our safe place, my home' }, { src: 'l.jpg', caption: 'Two goofs so in love with each other' }, { src: 'm.jpg', caption: 'New jersey shoot day' }, { src: 'n.jpg', caption: 'Back to Manipal lake, chasing our one and only sunrise' }, { src: 'o.jpg', caption: 'Me with my trophy' }, { src: 'p.jpg', caption: 'Just one of those pictures that make me smile' }, { src: 'q.jpg', caption: 'The first time you dressed up in front of me' }, { src: 'r.jpg', caption: 'To be your bangle delivery guy now and forever' }, { src: 's.jpg', caption: 'Soft Launch day' }, { src: 't.jpg', caption: 'Adulting day, getting documents and Aadhar and going to the bank' }, { src: 'u.jpg', caption: 'The morning after your first night over' }, { src: 'v.jpg', caption: 'Before "us" existed' }, { src: 'w.jpg', caption: 'Our first evening after knowing about each other' }
         ];
 
+        // --- DOM ELEMENTS ---
         let currentPhotoTop = 100;
         let buttonShown = false;
         const proceedBtn = document.getElementById('proceedBtn');
+        const backgroundMusic = document.getElementById('background-music');
+        let musicHasStarted = false;
 
+        // --- FUNCTIONS ---
         function createPhotoElement() {
             const memory = memories[Math.floor(Math.random() * memories.length)];
             const wrapper = document.createElement('div');
@@ -167,25 +155,40 @@
             for (let i = 0; i < count; i++) {
                 createPhotoElement();
             }
+            document.body.style.height = (currentPhotoTop + 800) + 'px';
             currentPhotoTop += 400;
         }
+        
+        function attemptToPlayMusic() {
+            if (!musicHasStarted) {
+                backgroundMusic.play().then(() => {
+                    musicHasStarted = true;
+                }).catch(error => {
+                    console.log("Autoplay was prevented by the browser.");
+                });
+            }
+        }
 
+        // --- EVENT LISTENERS ---
         window.addEventListener('scroll', () => {
-            // Infinite scroll logic
             if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
                 addMorePhotos();
             }
 
-            // Logic to show the button
-            if (!buttonShown && window.scrollY > 600) { // Show button after scrolling 600px
+            if (!buttonShown && window.scrollY > 600) {
                 proceedBtn.classList.add('visible');
                 buttonShown = true;
             }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.height = '2000px'; 
             addMorePhotos(15);
+            attemptToPlayMusic(); // Try to play music on load
         });
+        
+        // Add a one-time click listener as a fallback for autoplay
+        document.body.addEventListener('click', attemptToPlayMusic, { once: true });
 
     </script>
 </body>
