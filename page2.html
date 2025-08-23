@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: lavender; /* Consistent lavender background */
+            background-color: lavender;
             text-align: center;
             padding: 50px;
             color: #3a0066;
@@ -117,14 +117,13 @@
         <input type="text" id="lyricInput" class="lyric-input" placeholder="Type the next line here">
     </div>
 
-    <a href="when-you-said-you-loved-me.html" class="proceed-button" id="proceedBtn">PROCEED</a>
+    <a href="memories.html" class="proceed-button" id="proceedBtn">PROCEED</a>
 
     <script>
         const lyricInput = document.getElementById('lyricInput');
         const proceedBtn = document.getElementById('proceedBtn');
 
         lyricInput.addEventListener('input', function() {
-            // Check if the typed answer is correct (ignoring case and extra spaces)
             if (this.value.trim().toLowerCase() === 'when you said you loved me') {
                 proceedBtn.style.display = 'inline-block';
             } else {
