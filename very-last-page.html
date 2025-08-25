@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You</title>
+    <title>The Treasure</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-    <style>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet"> <style>
         body {
-            background-color: #0c0c2c; /* Deep midnight blue */
+            background-color: #0c0c2c;
             text-align: center;
             padding: 50px;
             color: #ffffff;
@@ -44,7 +44,7 @@
             z-index: 1;
             max-width: 800px;
         }
-        .poem {
+        .poem-placeholder { /* This is the placeholder before the letter */
             font-family: 'Nunito', sans-serif;
             font-size: 1.5rem;
             line-height: 2;
@@ -81,34 +81,53 @@
             50% { transform: scale(1.3); }
         }
 
-        /* Heart Eruption Styles */
-        .heart-eruption-overlay {
-            display: none;
+        /* Letter Modal Styles */
+        .letter-modal {
+            display: none; /* Hidden by default */
             position: fixed;
-            top: 0;
+            z-index: 1000;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            z-index: 1000;
+            overflow: auto;
+            background-color: rgba(12, 12, 44, 0.8);
             align-items: center;
             justify-content: center;
-            background-color: rgba(12, 12, 44, 0.8);
-            pointer-events: none;
         }
-        .giant-heart {
-            font-size: 50vw;
-            color: #ff4d4d;
-            animation: giant-beat 1.5s ease-in-out;
+        .letter-content {
+            background-color: #fdfaef; /* Creamy paper color */
+            color: #333;
+            margin: auto;
+            padding: 40px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            animation: zoomIn 0.5s ease-out;
+            font-family: 'Caveat', cursive; /* HANDWRITING FONT */
+            font-size: 2rem;
+            line-height: 1.6;
+            text-align: left;
         }
-        @keyframes giant-beat {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes zoomIn {
+            from { transform: scale(0.4); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
-        .particle {
-            position: fixed;
-            pointer-events: none;
-            /* Animation is now set by JS */
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: sans-serif;
+        }
+        .close-button:hover {
+            color: #333;
         }
     </style>
 </head>
@@ -117,11 +136,8 @@
     <div class="starry-background" id="star-container"></div>
 
     <div class="container">
-        <div class="poem">
-            <p>This is where your beautiful poem will go,<br>
-            Each line will softly start to glow.<br>
-            A message of love, for her to see,<br>
-            A perfect end for you and me.</p>
+        <div class="poem-placeholder">
+            <p>Here lies the final treasure,<br>A message just for you,<br>A love that knows no measure,<br>In everything I do.</p>
         </div>
 
         <button class="final-button" id="finalButton">
@@ -129,14 +145,20 @@
         </button>
     </div>
 
-    <div class="heart-eruption-overlay" id="heart-overlay">
-        <div class="giant-heart">❤️</div>
+    <div id="letter-modal" class="letter-modal">
+        <div class="letter-content">
+            <span class="close-button">&times;</span>
+            <p>After this entire treasure hunt, you might be wondering what the treasure at the end is. Well, baby, I want you to know you are the treasure, the gift in all our lives, everyone near to you or anyone who has had an opportunity to talk to you.</p>
+            <p>You are the treasure and the gift that keeps on giving, every single day, no matter what, and today is the one day we celebrate our gift.</p>
+            <p>Thank you for all the love, I hope this is something that reminds you of the gift that you are.</p>
+            <p>Happy Birthday, Love <span class="heart">❤️</span></p>
+        </div>
     </div>
 
     <script>
         // --- Starry Background Script ---
         const starContainer = document.getElementById('star-container');
-        const starCount = 150; // Slightly more stars
+        const starCount = 150;
         for (let i = 0; i < starCount; i++) {
             const star = document.createElement('div');
             star.className = 'star';
@@ -149,71 +171,25 @@
             starContainer.appendChild(star);
         }
 
-        // --- Heart & Confetti Eruption Script ---
+        // --- Letter Reveal Script ---
         const finalButton = document.getElementById('finalButton');
-        const heartOverlay = document.getElementById('heart-overlay');
-        const particleCount = 70; // Increased particle count for a bigger burst
+        const letterModal = document.getElementById('letter-modal');
+        const closeButton = document.querySelector('.close-button');
 
         finalButton.addEventListener('click', () => {
-            // Show the giant heart overlay
-            heartOverlay.style.display = 'flex';
-
-            // Create particle hearts and confetti
-            for (let i = 0; i < particleCount; i++) {
-                // Create a mix of hearts and confetti
-                if (Math.random() > 0.4) {
-                     createParticle('❤️', finalButton.getBoundingClientRect());
-                } else {
-                     createParticle('🎉', finalButton.getBoundingClientRect());
-                }
-            }
-
-            // Hide the overlay after a short duration
-            setTimeout(() => {
-                heartOverlay.style.display = 'none';
-            }, 2000); // Duration of 2 seconds
+            letterModal.style.display = 'flex';
         });
 
-        function createParticle(content, buttonRect) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.innerHTML = content;
-            particle.style.fontSize = Math.random() * 2 + 1 + 'rem'; // Random size
-            
-            // Set particle color - red for hearts, random for confetti
-            particle.style.color = content === '❤️' ? '#ff4141' : getRandomColor();
-            
-            // Start particles from the button's position
-            particle.style.left = (buttonRect.left + buttonRect.width / 2) + 'px';
-            particle.style.top = (buttonRect.top + buttonRect.height / 2) + 'px';
+        closeButton.addEventListener('click', () => {
+            letterModal.style.display = 'none';
+        });
 
-            const angle = Math.random() * 360;
-            const distance = Math.random() * 200 + 80; // Fly out further
-            const finalX = Math.cos(angle * Math.PI / 180) * distance;
-            const finalY = Math.sin(angle * Math.PI / 180) * distance;
-
-            // Animate the particle
-            particle.animate([
-                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
-                { transform: `translate(calc(-50% + ${finalX}px), calc(-50% + ${finalY}px)) scale(0)`, opacity: 0 }
-            ], {
-                duration: 1200 + Math.random() * 500, // Varied duration
-                easing: 'cubic-bezier(0.17, 0.84, 0.44, 1)' // Smoother easing
-            });
-
-            document.body.appendChild(particle);
-
-            // Remove particle from DOM after animation
-            setTimeout(() => {
-                particle.remove();
-            }, 1700);
-        }
-
-        function getRandomColor() {
-            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800'];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
+        // Optional: Close the letter if she clicks outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target == letterModal) {
+                letterModal.style.display = 'none';
+            }
+        });
     </script>
-
 </body>
 </html>
