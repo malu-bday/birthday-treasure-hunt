@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Treasure</title>
+    <title>For You</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet"> <style>
@@ -44,13 +44,28 @@
             z-index: 1;
             max-width: 800px;
         }
-        .poem-placeholder { /* This is the placeholder before the letter */
+        .poem {
             font-family: 'Nunito', sans-serif;
             font-size: 1.5rem;
             line-height: 2;
             color: #e0e0ff;
             text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #c6b4f7, 0 0 30px #c6b4f7;
             margin-bottom: 60px;
+            text-align: center;
+            max-height: 50vh;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+        .poem::-webkit-scrollbar {
+            width: 8px;
+        }
+        .poem::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .poem::-webkit-scrollbar-thumb {
+            background: rgba(230, 230, 250, 0.5);
+            border-radius: 10px;
         }
         .final-button {
             display: inline-flex;
@@ -83,7 +98,7 @@
 
         /* Letter Modal Styles */
         .letter-modal {
-            display: none; /* Hidden by default */
+            display: none;
             position: fixed;
             z-index: 1000;
             left: 0;
@@ -96,7 +111,7 @@
             justify-content: center;
         }
         .letter-content {
-            background-color: #fdfaef; /* Creamy paper color */
+            background-color: #fdfaef;
             color: #333;
             margin: auto;
             padding: 40px;
@@ -107,10 +122,12 @@
             position: relative;
             box-shadow: 0 5px 20px rgba(0,0,0,0.4);
             animation: zoomIn 0.5s ease-out;
-            font-family: 'Caveat', cursive; /* HANDWRITING FONT */
-            font-size: 2rem;
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem; /* Adjusted for better readability of the letter */
             line-height: 1.6;
             text-align: left;
+            max-height: 80vh;
+            overflow-y: auto;
         }
         @keyframes zoomIn {
             from { transform: scale(0.4); opacity: 0; }
@@ -136,8 +153,48 @@
     <div class="starry-background" id="star-container"></div>
 
     <div class="container">
-        <div class="poem-placeholder">
-            <p>Here lies the final treasure,<br>A message just for you,<br>A love that knows no measure,<br>In everything I do.</p>
+        <div class="poem">
+            <p>You exist beyond my imagination,<br>
+            A fit so perfect, like my hand in a glove<br>
+            Being with you feels like being on vacation,<br>
+            Like God, himself, let out his special dove,<br>
+            Upon looking at you, He received an ovation,<br>
+            And to Him I thank for making you My Love.</p>
+
+            <p>A comfort that had never been felt before,<br>
+            The kind of gentle breeze that I felt at the swing set;<br>
+            I'd carefully tread where you stepped on the floor,<br>
+            All my time with you feels still less,<br>
+            Your mind and body and soul - I want to explore,<br>
+            Because you, my love, are My Princess.</p>
+
+            <p>For you I'd take the stars and make them yours,<br>
+            While you run to me and I give you a swirl;<br>
+            When you became mine, I stopped searching for cures,<br>
+            Because then, I had found my world;<br>
+            With you I'd go around and around on detours,<br>
+            For you are mine, and I am yours, Babygirl.</p>
+
+            <p>I don't have what it takes to describe you,<br>
+            And I kinda hope that that feeling never changes;<br>
+            Only when I look back do I see how much I grew,<br>
+            With you, we didn't feel like strangers,<br>
+            And if that changed, I'd come back to pursue<br>
+            You, my everything, My Angel.</p>
+
+            <p>You're a thief for you have my heart,<br>
+            That makes me stop myself from going to the jeweller;<br>
+            Maybe I am the thief for I stole from a museum their art,<br>
+            And since then, I've only gotten more stupider;<br>
+            I'd disagree though, and say I'm maybe smarter,<br>
+            Because I decided that you are My Jupiter.</p>
+
+            <p>Only being with you let me see everything,<br>
+            The earth, the stars, and all from up above;<br>
+            I want you and choose you when asked for anything,<br>
+            Because you are her, who they sing of,<br>
+            When they look at me they are envying,<br>
+            To show you by my side forever and ever, My Love</p>
         </div>
 
         <button class="final-button" id="finalButton">
@@ -156,7 +213,6 @@
     </div>
 
     <script>
-        // --- Starry Background Script ---
         const starContainer = document.getElementById('star-container');
         const starCount = 150;
         for (let i = 0; i < starCount; i++) {
@@ -171,7 +227,6 @@
             starContainer.appendChild(star);
         }
 
-        // --- Letter Reveal Script ---
         const finalButton = document.getElementById('finalButton');
         const letterModal = document.getElementById('letter-modal');
         const closeButton = document.querySelector('.close-button');
@@ -184,7 +239,6 @@
             letterModal.style.display = 'none';
         });
 
-        // Optional: Close the letter if she clicks outside of it
         window.addEventListener('click', (event) => {
             if (event.target == letterModal) {
                 letterModal.style.display = 'none';
